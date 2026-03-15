@@ -16,6 +16,7 @@ dependencies = [
 [project.scripts]
 dev = "prod_server.main:dev"
 prod = "prod_server.main:prod"
+prod_env = "prod_server.main:prod"
 
 [tool.setuptools.packages.find]
 where = ["src"]
