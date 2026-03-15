@@ -1,9 +1,6 @@
 from pymongo import MongoClient
-
-MONGO_URI = "mongodb://localhost:27017"
+from prod_server.config import MONGO_URI, DATABASE_NAME
 
 client = MongoClient(MONGO_URI)
 
-db = client["prod_server_db"]
-
-print("MongoDB connected...")
+db = client[DATABASE_NAME]

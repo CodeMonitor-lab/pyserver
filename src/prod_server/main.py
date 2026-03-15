@@ -1,9 +1,10 @@
-from fastapi import FastAPI
 import uvicorn
-# imported routes
+from fastapi import FastAPI
+from prod_server.config import HOST, PORT
 from prod_server.routes import user_routes
 
 app = FastAPI()
+
 app.include_router(user_routes.router)
 
 
@@ -11,12 +12,22 @@ app.include_router(user_routes.router)
 async def root():
     return {"message": "Server running..."}
 
+
 def dev():
     uvicorn.run(
         "prod_server.main:app",
-        host="127.0.0.1",
-        port=8000,
-        reload= True,
-        app_dir="src",
+        host=HOST,
+        port=PORT,
+        reload=True,
+        reload_dirs=["src"],
     )
 
+
+def prod():
+    uvicorn.run(
+        "prod_server.main:app",
+        host=HOST,
+        port=PORT,
+        reload=False,
+        workers=4,
+    )
