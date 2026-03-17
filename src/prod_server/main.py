@@ -1,11 +1,19 @@
 import uvicorn
 from fastapi import FastAPI
+from render_sdk import Workflows
+
 from prod_server.config import HOST, PORT
 from prod_server.routes import user_routes
 
 app = FastAPI()
+workflows = Workflows()
 
 app.include_router(user_routes.router)
+
+# render workflows example
+@workflows.task()
+def calculate_square(a: int) -> int:
+    return a * a
 
 
 @app.get("/")
@@ -19,7 +27,6 @@ def dev():
         host=HOST,
         port=PORT,
         reload=True,
-        reload_dirs=["src"],
     )
 
 
@@ -28,6 +35,9 @@ def prod():
         "prod_server.main:app",
         host=HOST,
         port=PORT,
-        reload=False,
         workers=4,
     )
+
+
+if __name__ == "__main__":
+    dev()
