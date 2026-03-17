@@ -1,24 +1,19 @@
 import os
 from dotenv import load_dotenv
 
-# detect environment
 ENV = os.getenv("ENV", "dev")
 
-# load correct env file
 if ENV == "prod":
-    load_dotenv(".env.prod")
+    load_dotenv(".env.prod", override=False)
 else:
-    load_dotenv(".env.dev")
+    load_dotenv(".env.dev", override=False)
 
-# server config
 HOST = os.getenv("HOST", "127.0.0.1")
-PORT = int(os.getenv("PORT", 8000))
+PORT = int(os.environ.get("PORT", 8000))  # <-- important change
 
-# database config
 MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 
-# validation
 if not MONGO_URI:
     raise ValueError("MONGO_URI is not set in environment variables")
 
